@@ -426,13 +426,16 @@ namespace PathfindingForVehicles
 
                 Debug.Log($"Node {i} | Position: {finalPath[i].rearWheelPos} | Heading: {finalPath[i].heading} | Hitch angle: {Mathf.Abs(finalPath[i].TrailerHeadingInRadians-finalPath[i].heading)}");
 
-                // Actually adding the node/waypoint state values to the variables, for now only x and y positions and the heading and hitch angle, no controls/steering angle yet. 
-                // Though this wouldn't be much harder, I just feel like it wouldn't add much for now. 
-                positions.Add(new List<double> { finalPath[i].rearWheelPos.x, finalPath[i].rearWheelPos.z}); // has to be x and z because our coordinate system is weird in unity
+                // Actually adding the node/waypoint state values to the variables
+                positions.Add(new List<double> { finalPath[i].rearWheelPos.x, finalPath[i].rearWheelPos.z}); // has to be x and z because our coordinate system is weird in Unity
                 headings.Add(finalPath[i].heading); // truck heading
-                hitch_angles.Add(Mathf.Abs(finalPath[i].TrailerHeadingInRadians - finalPath[i].heading)); //hitch angles (These are calculated wrong, so don't know how much use this is. Probably prefer initial guess of 0 for them).
-                // Maybe we can leave out the hitch angles and just set the reference/initial guess for these at 0, and include the steering angle or the controls instead. As they probably add more, we could also add all of them
-                // Just feel like some of them don't add too much to our initial guess
+                hitch_angles.Add(Mathf.Abs(finalPath[i].TrailerHeadingInRadians - finalPath[i].heading)); 
+                // Hitch angles need to as Mathf.DeltaAngle, right now they're overflowing to 2pi, also hitch angle should probably be set to 0 as reference
+                // Since we want to keep hitch angle as low as possible, using a higher than 0 hitch angle as reference/initial guess might actually make it work worse
+                // Might just remove the hitch_angles from the JSON data structure and just use np.zeros
+                // Steering angle and velocity + steering speed might add something, so could look into adding those. Steering angle is already available under node.nodesteeringangle
+                // Velocity and steering speed not sure how to implement, I also wonder if those will even add anything to the TO, as there is already upper and lower bounds on those
+                // So not too much freedom is left to the optimization algorithm (IPOPT)
             }
             // Creating the datastructure we want to send
             var data = new
