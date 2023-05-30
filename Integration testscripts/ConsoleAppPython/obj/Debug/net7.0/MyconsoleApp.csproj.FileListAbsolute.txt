@@ -1,0 +1,15 @@
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\bin\Debug\net7.0\MyconsoleApp.exe
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\bin\Debug\net7.0\MyconsoleApp.deps.json
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\bin\Debug\net7.0\MyconsoleApp.runtimeconfig.json
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\bin\Debug\net7.0\MyconsoleApp.dll
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\bin\Debug\net7.0\MyconsoleApp.pdb
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.csproj.AssemblyReference.cache
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.AssemblyInfoInputs.cache
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.AssemblyInfo.cs
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.dll
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\refint\MyconsoleApp.dll
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.pdb
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\MyconsoleApp.genruntimeconfig.cache
+C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\ConsoleAppPython\obj\Debug\net7.0\ref\MyconsoleApp.dll

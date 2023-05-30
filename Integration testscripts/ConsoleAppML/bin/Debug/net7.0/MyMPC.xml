@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyMPC</name>
+    </assembly>
+    <members>
+        <member name="T:MyMPC.Class1">
+            <summary>
+            The Class1 class provides a CLS compliant, MWArray interface to the MATLAB
+            functions contained in the files:
+            <newpara></newpara>
+            C:\Users\Mitchel\Documents\GitHub\self-driving-truck-trailer\MyconsoleApp\my_mpc.m
+            </summary>
+            <remarks>
+            @Version 1.0
+            </remarks>
+        </member>
+        <member name="M:MyMPC.Class1.#cctor">
+            <summary internal= "true">
+            The static constructor instantiates and initializes the MATLAB Runtime instance.
+            </summary>
+        </member>
+        <member name="M:MyMPC.Class1.#ctor">
+            <summary>
+            Constructs a new instance of the Class1 class.
+            </summary>
+        </member>
+        <member name="M:MyMPC.Class1.Finalize">
+            <summary internal= "true">
+            Class destructor called by the CLR garbage collector.
+            </summary>
+        </member>
+        <member name="M:MyMPC.Class1.Dispose">
+            <summary>
+            Frees the native resources associated with this object
+            </summary>
+        </member>
+        <member name="M:MyMPC.Class1.Dispose(System.Boolean)">
+            <summary internal= "true">
+            Internal dispose function
+            </summary>
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc">
+             <summary>
+             Provides a single output, 0-input MWArrayinterface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 1-input MWArrayinterface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="input1">Input argument #1</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 2-input MWArrayinterface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="input1">Input argument #1</param>
+             <param name="input2">Input argument #2</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 3-input MWArrayinterface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="input1">Input argument #1</param>
+             <param name="input2">Input argument #2</param>
+             <param name="input3">Input argument #3</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides a single output, 4-input MWArrayinterface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="input1">Input argument #1</param>
+             <param name="input2">Input argument #2</param>
+             <param name="input3">Input argument #3</param>
+             <param name="input4">Input argument #4</param>
+             <returns>An MWArray containing the first output argument.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(System.Int32)">
+             <summary>
+             Provides the standard 0-input MWArray interface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 1-input MWArray interface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="input1">Input argument #1</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 2-input MWArray interface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="input1">Input argument #1</param>
+             <param name="input2">Input argument #2</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 3-input MWArray interface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="input1">Input argument #1</param>
+             <param name="input2">Input argument #2</param>
+             <param name="input3">Input argument #3</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray,MathWorks.MATLAB.NET.Arrays.MWArray)">
+             <summary>
+             Provides the standard 4-input MWArray interface to the my_mpc MATLAB function.
+             </summary>
+             <remarks>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return.</param>
+             <param name="input1">Input argument #1</param>
+             <param name="input2">Input argument #2</param>
+             <param name="input3">Input argument #3</param>
+             <param name="input4">Input argument #4</param>
+             <returns>An Array of length "numArgsOut" containing the output
+             arguments.</returns>
+            
+        </member>
+        <member name="M:MyMPC.Class1.my_mpc(System.Int32,MathWorks.MATLAB.NET.Arrays.MWArray[]@,MathWorks.MATLAB.NET.Arrays.MWArray[])">
+             <summary>
+             Provides an interface for the my_mpc function in which the input and output
+             arguments are specified as an array of MWArrays.
+             </summary>
+             <remarks>
+             This method will allocate and return by reference the output argument
+             array.<newpara></newpara>
+             M-Documentation:
+             Define the variables
+             </remarks>
+             <param name="numArgsOut">The number of output arguments to return</param>
+             <param name= "argsOut">Array of MWArray output arguments</param>
+             <param name= "argsIn">Array of MWArray input arguments</param>
+            
+        </member>
+        <member name="M:MyMPC.Class1.WaitForFiguresToDie">
+             <summary>
+             This method will cause a MATLAB figure window to behave as a modal dialog box.
+             The method will not return until all the figure windows associated with this
+             component have been closed.
+             </summary>
+             <remarks>
+             An application should only call this method when required to keep the
+             MATLAB figure window from disappearing.  Other techniques, such as calling
+             Console.ReadLine() from the application should be considered where
+             possible.</remarks>
+            
+        </member>
+    </members>
+</doc>
