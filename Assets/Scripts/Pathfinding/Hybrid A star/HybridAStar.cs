@@ -21,10 +21,10 @@ namespace PathfindingForVehicles
             maxAngle * Mathf.Deg2Rad/2, maxAngle * Mathf.Deg2Rad };
         //The car will never reach the exact goal position, this is how accurate we want to be
         private const float posAccuracy = 1f;
-        private const float headingAccuracy = 5f;
+        private const float headingAccuracy = 10f;
         //The heading resolution (Junior had 5) [degrees]
-        private const float headingResolution = 5f;
-        private const float headingResolutionTrailer = 5f;
+        private const float headingResolution = 10f;
+        private const float headingResolutionTrailer = 10f;
         //To time the different parts of the algorithm 
         private static int timer_selectLowestCostNode;
         private static int timer_addNodeToHeap;
@@ -416,6 +416,8 @@ namespace PathfindingForVehicles
             {
                 //Debug.Log($"Node {i} | fCost {finalPath[i].fCost} | gCost {finalPath[i].gCost} | hCost {finalPath[i].hCost} | " +
                 //    $"Heading: {finalPath[i].heading} | Trailer: {finalPath[i].TrailerHeadingInRadians} | Reversing: {finalPath[i].isReversing}");
+
+                Debug.Log($"Node {i} | Position: {finalPath[i].rearWheelPos} | Heading: {finalPath[i].heading} | Trailer heading: {finalPath[i].TrailerHeadingInRadians} | Reversing: {finalPath[i].isReversing}");
             }
 
             //Display how long time everything took
@@ -518,7 +520,7 @@ namespace PathfindingForVehicles
                         //The trailer sux when reversing so add an extra cost
                         if (childNode.isReversing)
                         {
-                            childNode.gCost += (Parameters.trailerReverseCost) * driveDistance;
+                            childNode.gCost -= (Parameters.trailerReverseCost) * driveDistance;
                         }
 
                         // Add generic cost of trailer angle

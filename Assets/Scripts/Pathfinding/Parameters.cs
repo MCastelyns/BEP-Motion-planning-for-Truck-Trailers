@@ -22,7 +22,7 @@ namespace PathfindingForVehicles
 
         //Obstacles
         //Make the car fatter to be on the safe side when checking collisions
-        public const float marginOfSafety = 1.0f; //1.0f, should aim to make it lower, ideally 0.0, but something like 0.2 should be fine too
+        public const float marginOfSafety = 0.5f; //1.0f, should aim to make it lower, ideally 0.0, but something like 0.2 should be fine too
         //Size of each random obstacle
         public const float maxObstacleSize = 15f;
         public const float minObstacleSize = 1f;
@@ -49,16 +49,16 @@ namespace PathfindingForVehicles
         public const float reverseCost = 1.0f;        // [m]
         public const float switchingDirectionOfMovementCost = 20f; //20f
         //Extra cost for trailer because its not good at reversing
-        public const float trailerReverseCost = 5f; //1f
+        public const float trailerReverseCost = 1f; //1f
         public const float trailerAngleCost = 0.00f * Mathf.Deg2Rad; // Angle truck/trailer [deg] 0.5f
         //Heuristic Costs scale factors
-        public const float carDistance = 1.0f;              // distance to end position of car/truck 2.0-3.0f
+        public const float carDistance = 4.0f;              // distance to end position of car/truck 2.0-3.0f
         public const float trailerDistance = 0.0f;          // distance to end position of trailer
         public const float trailerSidewaysDistance = 0.0f;  // sideways distance to end position of trailer  0.5f
         public const float trailerForwardDistance = 0.0f;   // forward distance to end position of trailer
         public const float trailerAngle = 0.0f;             // diff angle trailer current/end 0.5f
         public const float truckSidewaysDistance = 0.0f;    // sideways distance to end position of truck 0.2f
-        public const float trailerheuristicsdistance = 40.0f; // Distance cutoff where trailer heuristics start being taken into account, test
+        public const float trailerheuristicsdistance = 30.0f; // Distance cutoff where trailer heuristics start being taken into account, test
 
         //Voronoi field
         //The falloff rate > 0
