@@ -12,6 +12,7 @@ hitch_angles = np.array(data['HitchAngles'])
 
 # Each variable is now a numpy array. For example, positions is a 2D array with shape (N, 2), where column 1 is x coordinates and column 2 is y (or in our case z) coordinates
 
-print(positions)
-print(headings)
-print(hitch_angles)
+print('Trajectory Received:')
+print('X and Y Positions:', positions)
+print('Headings:', headings)
+print('Hitch Angles:', hitch_angles)
