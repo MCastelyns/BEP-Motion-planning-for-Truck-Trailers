@@ -7,6 +7,28 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
+// New classes needed to serialize (transform data to be suited to be written to JSON) the data
+public class SerializableObstacle
+{
+    public SerializableVector2 FL { get; set; }
+    public SerializableVector2 FR { get; set; }
+    public SerializableVector2 BL { get; set; }
+    public SerializableVector2 BR { get; set; }
+}
+
+public class SerializableVector2
+{
+    public float X { get; set; }
+    public float Y { get; set; }
+
+    public SerializableVector2(float x, float y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+
 namespace PathfindingForVehicles
 {
     //Hybrid A* pathfinding algorithm
@@ -418,36 +440,68 @@ namespace PathfindingForVehicles
             var positions = new List<List<double>>();
             var headings = new List<double>();
             var hitch_angles = new List<double>();
+            var steer = new List<double>();
 
             for (int i = 0; i < finalPath.Count; i++)
             {
                 //Debug.Log($"Node {i} | fCost {finalPath[i].fCost} | gCost {finalPath[i].gCost} | hCost {finalPath[i].hCost} | " +
                 //    $"Heading: {finalPath[i].heading} | Trailer: {finalPath[i].TrailerHeadingInRadians} | Reversing: {finalPath[i].isReversing}");
 
-                Debug.Log($"Node {i} | Position: {finalPath[i].rearWheelPos} | Heading: {finalPath[i].heading} | Hitch angle: {Mathf.Abs(finalPath[i].TrailerHeadingInRadians-finalPath[i].heading)}");
+                Debug.Log($"Node {i} | Position: {finalPath[i].rearWheelPos} | Heading: {Mathf.DeltaAngle(finalPath[i].heading * Mathf.Rad2Deg, 0) * Mathf.Deg2Rad} | Hitch angle: {Mathf.DeltaAngle(finalPath[i].TrailerHeadingInRadians * Mathf.Rad2Deg, finalPath[i].heading * Mathf.Rad2Deg) * Mathf.Deg2Rad}");
 
                 // Actually adding the node/waypoint state values to the variables
                 positions.Add(new List<double> { finalPath[i].rearWheelPos.x, finalPath[i].rearWheelPos.z}); // has to be x and z because our coordinate system is weird in Unity
-                headings.Add(finalPath[i].heading); // truck heading
-                hitch_angles.Add(Mathf.Abs(finalPath[i].TrailerHeadingInRadians - finalPath[i].heading)); 
-                // Hitch angles need to as Mathf.DeltaAngle, right now they're overflowing to 2pi, also hitch angle should probably be set to 0 as reference
-                // Since we want to keep hitch angle as low as possible, using a higher than 0 hitch angle as reference/initial guess might actually make it work worse
+                headings.Add(Mathf.DeltaAngle(finalPath[i].heading * Mathf.Rad2Deg, 0) * Mathf.Deg2Rad); // truck heading
+                hitch_angles.Add(Mathf.DeltaAngle(finalPath[i].TrailerHeadingInRadians * Mathf.Rad2Deg, finalPath[i].heading * Mathf.Rad2Deg) * Mathf.Deg2Rad); 
+                // Angles need to be calculated with Mathf.DeltaAngle, also hitch angle could probably be set to 0 as reference
+                // Since we want to keep hitch angle as low as possible, using a higher than 0 hitch angle as reference/initial guess might actually make it work worse, have to test this
                 // Might just remove the hitch_angles from the JSON data structure and just use np.zeros
                 // Steering angle and velocity + steering speed might add something, so could look into adding those. Steering angle is already available under node.nodesteeringangle
                 // Velocity and steering speed not sure how to implement, I also wonder if those will even add anything to the TO, as there is already upper and lower bounds on those
                 // So not too much freedom is left to the optimization algorithm (IPOPT)
             }
             // Creating the datastructure we want to send
-            var data = new
+            var pathdata = new
             {
                 Positions = positions,
                 Headings = headings,
                 HitchAngles = hitch_angles
             };
             // Writing to the .JSON named 'initialize' that we can send once to our TO (Trajectory Optimization) as initial guess
-            File.WriteAllText("initialize.json", JsonConvert.SerializeObject(data));
-            Debug.Log($"JSON succesfully made");
+            File.WriteAllText("initialize.json", JsonConvert.SerializeObject(pathdata, Formatting.Indented));
+            Debug.Log($"Path JSON succesfully made");
 
+
+            // Test to see what format the obstacles are in exactly, needed for importing to python. 
+            // First we take a list of all obstacles, then we make this into the new class serializableobstacle, which just has the info we want (Makes it easier to handle)
+            List<Obstacle> obstaclesall = map.allObstacles;
+            List<SerializableObstacle> serializableObstacles = new List<SerializableObstacle>();
+
+            // Now we loop through all obstacles and get the Vector2 coordinates of the cornerpoints
+            // Then we add a new serializableobstacle with those cornerpoints to the list of serializableobstacles (starts out empty)
+            for (int i = 0; i < obstaclesall.Count; i++)
+            {
+                Vector2 FL = obstaclesall[i].cornerPos.FL.XZ();
+                Vector2 FR = obstaclesall[i].cornerPos.FR.XZ();
+                Vector2 BL = obstaclesall[i].cornerPos.BL.XZ();
+                Vector2 BR = obstaclesall[i].cornerPos.BR.XZ();
+
+                serializableObstacles.Add(new SerializableObstacle
+                {
+                    FL = new SerializableVector2(FL.x, FL.y),
+                    FR = new SerializableVector2(FR.x, FR.y),
+                    BL = new SerializableVector2(BL.x, BL.y),
+                    BR = new SerializableVector2(BR.x, BR.y),
+                });
+            }
+
+            // Now we format the string to be put into the JSON in the correct way
+            string obstaclejson = JsonConvert.SerializeObject(serializableObstacles, Formatting.Indented);
+            // And write the data to a JSON, this data can then be read in a python script to import the obstacle coordinates
+            File.WriteAllText("obstacles.json", obstaclejson);
+            Debug.Log($"Obstacle JSON succesfully made");
+
+            
 
             //Display how long time everything took
             string display = DisplayController.GetDisplayTimeText(timer_selectLowestCostNode, "Select lowest cost node");

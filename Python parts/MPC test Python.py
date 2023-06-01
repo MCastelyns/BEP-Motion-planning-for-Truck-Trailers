@@ -8,8 +8,8 @@ import casadi as ca
 import numpy as np
 import time
 
-T = 1  # [s] Time step size
-N = 80  # Prediction horizon 80
+T = 1  # [s] Time step size -> 0.05 s timestep 
+N = 40  # Prediction horizon 80, Luyao advies -> 2-3s Horizon
 sim_tim = 160 # Simulation time 160
 
 # Symbolic optimization variables

@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Solver variables
-N = 150 #Steps
-T = 100 #Simulation time
+N = 120 #Steps
+T = 60 #Simulation time
 dt = T/N #Step size
 
 # Symbolic optimization variables
@@ -29,14 +29,13 @@ controls = ca.vertcat(u1, u2)
 M = 0.1
 L1 = 5
 L2 = 12
-d = 1
 
 # Dynamics
 rhs = ca.vertcat(u1 * ca.cos(theta), u1 * ca.sin(theta), (u1 * ca.tan(phi)) / L1, -((u1 * ca.sin(psi)) / L2) - ((((M * ca.cos(psi)) / L2) + 1) * (u1 * ca.tan(phi))) / L1, u2)
 f = ca.Function('f', [states, controls], [rhs])
 
 # Obstacles
-obstacles = np.array([[120, 70], [180, 120], [180, 80]])
+obstacles = np.array([[160,90], [180, 120], [180, 80]])
 
 # Variables for full trajectory (states+controls and a OPT_variables variable to use in the solver)
 X = ca.MX.sym('X', states.shape[0], N+1)
@@ -44,23 +43,23 @@ U = ca.MX.sym('U', controls.shape[0], N)
 OPT_variables = ca.vertcat(ca.reshape(X, 5 * (N + 1), 1), ca.reshape(U, 2 * N, 1))
 
 # Cost variables
-x_cost = 5
-y_cost = 5
+x_cost = 500
+y_cost = 500
 theta_cost = 0
 psi_cost = 2500  # Hitch angle cost
-phi_cost = 2500   # Steering angle cost
+phi_cost = 250   # Steering angle cost
 velocity_cost = 0
-steeringspeed_cost = 25
+steeringspeed_cost = 250
 direction_change_cost = 25  #Is nu meer soort verandering van snelheid cost
-backward_driving_cost = 10  #Iets hoger dan forward, is niet zo dat backward helemaal niet mag of per se slecht is
+backward_driving_cost = 100  #Iets hoger dan forward, is niet zo dat backward helemaal niet mag of per se slecht is
 
 # Cost matrices
 Q = np.diag([x_cost,y_cost,theta_cost,psi_cost,phi_cost])
 R = np.diag([velocity_cost, steeringspeed_cost])
 
 # Initial and final conditions
-x0 = np.array([50, 0, np.pi/6, 0, 0]) #5,0,2*np.pi/3,0,0
-xf = np.array([170, 100, -5*np.pi/6, 0, 0]) #0,5,0,0,0
+x0 = np.array([50, 0, 0, 0, 0]) #5,0,2*np.pi/3,0,0
+xf = np.array([170, 100, 0, 0, 0]) #0,5,0,0,0
 
 # Cost function
 J = 0
@@ -74,7 +73,7 @@ def check_collision(pos, obstacle):
     return ca.mtimes([dist_to_obstacle.T, dist_to_obstacle])  # Return the square of the distance to the obstacle
 
 # Large penalty for collisions
-penalty = 1e4
+penalty = 1e7
 
 # Cost and constraints over full trajectory
 for k in range(N-1):  # Loop till N-1 because we are now taking k+1 for the direction change cost
@@ -88,7 +87,7 @@ for k in range(N-1):  # Loop till N-1 because we are now taking k+1 for the dire
     
     # Add cost for backward driving, so the truck prefers moving forward, shouldn't be too high obviously
     J += backward_driving_cost * ca.fmax(-U[0, k], 0)
-
+    #print(ca.fmax(-U[0, k], 0))
 
     # Obstacle collision
     for obstacle in obstacles:
@@ -103,7 +102,7 @@ for k in range(N-1):  # Loop till N-1 because we are now taking k+1 for the dire
 J += ca.mtimes([U[:, N-1].T, R, U[:, N-1]])
 J += backward_driving_cost * ca.fmax(-U[0, N-1], 0)
 
-terminal_scaling = 100
+terminal_scaling = 100 
 J += ca.mtimes([(X[:, N] - xf).T, Q, (X[:, N] - xf)]) * terminal_scaling # Terminal cost
 
 
@@ -165,7 +164,7 @@ ubg = np.append(ubg, [0.5, 0.5, 0.2, 0.2, 0.2])
 nlp = {'x': OPT_variables, 'f': J, 'g': g}
 
 # Solver options
-opts ={'ipopt.print_level': 0, 'print_time': 1, 'ipopt.acceptable_obj_change_tol': 1e-6, 'ipopt.acceptable_tol': 1e-8, 'ipopt.max_iter': 1100}
+opts ={'ipopt.print_level': 0, 'print_time': 1, 'ipopt.acceptable_obj_change_tol': 1e-6, 'ipopt.acceptable_tol': 1e-8, 'ipopt.max_iter': 2000, }
 
 # Create solver
 solver = ca.nlpsol('solver', 'ipopt', nlp, opts)
@@ -208,9 +207,6 @@ res = solver(x0=init, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)
 solution = res['x'].full().flatten()
 X_sol = solution[:states.shape[0]*(N+1)].reshape((N + 1, 5)).T #Zal vast op een nettere manier geschreven kunnen worden, maar het werkt
 U_sol = solution[states.shape[0]*(N+1):].reshape((N, 2)).T
-
-#print("Optimized Trajectory:", X_sol)
-#print("Optimized Controls:", U_sol)
 
 # Extract optimized path
 X_opt = X_sol[0,:]
