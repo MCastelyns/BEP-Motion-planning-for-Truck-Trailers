@@ -74,3 +74,4 @@ crashlytics-build.properties
 
 # Temporary generated JSON files for communication between Python and C#. This would clutter github fast because we are generating new ones every time
 initialize.json
+obstacles.json
