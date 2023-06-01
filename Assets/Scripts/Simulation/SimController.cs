@@ -15,7 +15,7 @@ public class SimController : MonoBehaviour
     public Transform car_selfDriving;
     public Transform semi_selfDriving;
     public Transform trailer_selfDriving;
-    //The cars we will use as a marker so we can remeber where we clicked with mouse and at which angle
+    //The cars we will use as a marker so we can remember where we clicked with mouse and at which angle
     //It should have no scripts nor colliders attached to it
     public Transform car_marker;
     public Transform semi_marker;
@@ -39,7 +39,7 @@ public class SimController : MonoBehaviour
     {
         current = this;
 
-        //Create the other vehicles which we attach to the moise
+        //Create the other vehicles which we attach to the mouse
         GameObject deadCarMouseObj = Instantiate(car_marker.gameObject) as GameObject;
         GameObject deadSemiMouseObj = Instantiate(semi_marker.gameObject) as GameObject;
         GameObject deadSemiWithTrailerMouseObj = Instantiate(semiWithTrailer_marker.gameObject) as GameObject;

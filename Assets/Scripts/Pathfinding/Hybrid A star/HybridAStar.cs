@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using PathfindingForVehicles.ReedsSheppPaths;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.IO;
 
 // New classes needed to serialize (transform data to be suited to be written to JSON) the data

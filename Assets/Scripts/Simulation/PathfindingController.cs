@@ -253,7 +253,7 @@ public class PathfindingController : MonoBehaviour
         }
 
         //
-        // Smooth the path and send it to the car
+        // Path smoothing is now replaced by Trajectory Optimization (TO), so smoothPath is where our optimized trajectory will go
         //
 
         //If we have found a path
@@ -261,27 +261,9 @@ public class PathfindingController : MonoBehaviour
 
         if (finalPath != null && finalPath.Count > 0)
         {
-            //Modify the path to make it easier for the vehicle to follow it
-            //Step 1. Hybrid A* is using the rear wheel axle to generate the path, but it's easier for the car to follow it
-            //if we also know where the path should have been if we had used the front axle
-            Vector3 vehicleStartDir = SimController.current.GetSelfDrivingCarTrans().forward;
-            
-            Vector3 vehicleEndDir = SimController.current.GetCarShowingEndPosTrans().forward;
+            smoothPath = finalPath; // Replace finalPath with the path our TO gives us with finalpath as initial guess
 
-            ModifyPath.CalculateFrontAxlePositions(finalPath, startCar.carData, vehicleStartDir, vehicleEndDir, isMirrored: false);
-
-            //When reversing we should track a path which is a path that goes along the front axle
-            //but the front axle is mirrored along the rear axle
-            ModifyPath.CalculateFrontAxlePositions(finalPath, startCar.carData, vehicleStartDir, vehicleEndDir, isMirrored: true);
-
-
-            //Smooth the path by making it smoother and adding waypoints to make it easier for the car to follow the path 
-            startTime = Environment.TickCount;
-
-            // smoothPath = ModifyPath.SmoothPath(finalPath, map, isCircular: false, isDebugOn: true);
-            smoothPath = finalPath;
-
-            timeText += DisplayController.GetDisplayTimeText(startTime, Environment.TickCount, "Smooth path");
+            timeText += DisplayController.GetDisplayTimeText(startTime, Environment.TickCount, "Trajectory Optimization");
 
 
             //The car will immediatelly start following the path

@@ -45,8 +45,6 @@ namespace SelfDrivingVehicle
 
         private CarMode carMode = CarMode.Stop;
 
-        //Average the steering angles to simulate the time it takes to turn the wheels
-        private float averageSteeringAngle = 0f;
         //The steering angle we should have to follow the path
         private float wantedSteeringAngle = 0f;
         //The speed we should have to follow the path
