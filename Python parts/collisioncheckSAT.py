@@ -66,6 +66,9 @@ def plot_rectangles(rect1, rect2, collision):
     plt.show()
 
 # test cases
+# ([[x,y],[x,y],[x,y],[x,y]],[[x,y],[x,y],[x,y],[x,y]], True/False) waarbij die x,y de hoekpunten van rectangle 1 en 2 zijn
+# in de volgorde: [rectangle1punt1, rectangle1punt2, rectangle1punt3, rectangle1punt4],[rectangle2punt1, rectangle2punt2, rectangle2punt3, rectangle2punt4]
+# en de volgorde is clockwise of counterclockwise. Kan volgensmij allebei
 test_cases = [
     ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[-20, -20], [0, -20], [0, 0], [-20, 0]], True),
     ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[-5, -5], [5, -5], [5, 5], [-5, 5]], True),
