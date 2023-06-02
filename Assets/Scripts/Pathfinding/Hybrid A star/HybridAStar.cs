@@ -47,8 +47,8 @@ namespace PathfindingForVehicles
         private const float posAccuracy = 1f;
         private const float headingAccuracy = 10f;
         //The heading resolution (Junior had 5) [degrees]
-        private const float headingResolution = 10f;
-        private const float headingResolutionTrailer = 10f;
+        private const float headingResolution = 5f;
+        private const float headingResolutionTrailer = 5f;
         //To time the different parts of the algorithm 
         private static int timer_selectLowestCostNode;
         private static int timer_addNodeToHeap;
@@ -623,7 +623,7 @@ namespace PathfindingForVehicles
                         float truckSidewaysDistance = (float)Math.Abs((endCar.rearWheelPos.x - newRearWheelPos.x) * Math.Cos(endCar.HeadingInRadians)
                             - (endCar.rearWheelPos.z - newRearWheelPos.z) * Math.Sin(endCar.HeadingInRadians));
                         float trailerAngleH = 0f;
-                        if (trailerDistance < 20)
+                        if (trailerDistance < Parameters.trailerheuristicsdistance)
                         { // Add heuristic costs for trailer position/angle
                             trailerAngleH = Math.Abs(Mathf.DeltaAngle(newTrailerHeading * Mathf.Rad2Deg, endTrailer.HeadingInDegrees));
                         }

@@ -44,13 +44,13 @@ namespace PathfindingForVehicles
         //For example, we prefere to drive forward instead of reversing
         //Cost to go
         public const float turningCost = 0.2f;      // [rad] 0.5f
-        public const float turningChangeCost = 0.0f;// [rad] test implementation
+        public const float turningChangeCost = 0.0f; // [rad] test implementation
         public const float obstacleCost = 1.0f;
         public const float reverseCost = 1.0f;        // [m]
         public const float switchingDirectionOfMovementCost = 20f; //20f
         //Extra cost for trailer because its not good at reversing
         public const float trailerReverseCost = 1f; //1f
-        public const float trailerAngleCost = 0.00f * Mathf.Deg2Rad; // Angle truck/trailer [deg] 0.5f
+        public const float trailerAngleCost = 0.5f * Mathf.Deg2Rad; // Angle truck/trailer [deg] 0.5f
         //Heuristic Costs scale factors
         public const float carDistance = 4.0f;              // distance to end position of car/truck 2.0-3.0f
         public const float trailerDistance = 0.0f;          // distance to end position of trailer

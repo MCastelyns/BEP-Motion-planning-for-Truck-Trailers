@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches #Dit is nodig voor plotten, op een of andere manier deed normale plot het niet zo lekker
 import numpy as np
 # https://www.youtube.com/watch?v=Nm1Cgmbg5SQ&ab_channel=GamesWithGabe
+# Seperating axes theorem
 # This video does a pretty good job explaining the basic concept, and since python already has good tools for
 # Calculating dot product and vector subtraction etc. We don't need to do as much work as he does in the video
 
@@ -80,7 +81,7 @@ test_cases = [
     ([[0, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/2), 10*np.sin(np.pi/2)], [0, 10]], [[20*np.cos(np.pi/3), -20*np.sin(np.pi/3)], [30*np.cos(np.pi/3), -10*np.sin(np.pi/3)], [30*np.cos(np.pi/3), 10*np.sin(np.pi/3)], [20*np.cos(np.pi/3), 20*np.sin(np.pi/3)]], False),
 ]
 
-for rect1, rect2, expected in test_cases:
-    collision = is_collision(rect1, rect2)
-    print(f'Expected: {expected}, Got: {collision}') #Print expected result and actual result from function to see if it's right
-    plot_rectangles(rect1, rect2, collision) #Plot the rectangles with a title showing if the function returned true or false
+# for rect1, rect2, expected in test_cases:
+#     collision = is_collision(rect1, rect2)
+#     print(f'Expected: {expected}, Got: {collision}') #Print expected result and actual result from function to see if it's right
+#     plot_rectangles(rect1, rect2, collision) #Plot the rectangles with a title showing if the function returned true or false

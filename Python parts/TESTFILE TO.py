@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import json
 
+import collisioncheckSAT as cc
+
 # Make new class to store the variables. We can easily send all this data later to a JSON
 class TrajectoryPoint:
     def __init__(self, x, y, heading, hitch_angle, steering_angle):
@@ -18,6 +20,16 @@ class TrajectoryPoint:
         self.heading = heading
         self.hitch_angle = hitch_angle
         self.steering_angle = steering_angle
+    
+    # Method to convert the data to dictionary, which is needed to use the data for a JSON
+    def to_dict(self):
+        return{
+            'x': self.x,
+            'y': self.y,
+            'heading': self.heading,
+            'hitch_angle': self.hitch_angle,
+            'steering_angle': self.steering_angle
+        }
 
 # Import Data from JSON's
 # Import Obstacles
@@ -46,7 +58,8 @@ with open('initialize.json', 'r') as f:
 # Now we make arrays for each variable. We should reconstruct the path from this later, still missing some values
 # Have to make sure those are added to JSON and also properly imported here, for now we just set those to 0
 positions = np.array(data2['Positions'])
-headings = np.array(data2['Headings'])
+headings = np.array(data2['Headings']) # Since Unity is using weird axes, we have to add 90 degrees (pi/2) to allign the headings
+headings = headings + np.pi/2 # Before sending back the trajectory, we will obviously have to remove this value again to transform back to Unity axes
 hitch_angles = np.array(data2['HitchAngles'])
 
 
@@ -55,8 +68,8 @@ N = 120 #Steps
 
 # For now force N to be equal to length of positions -1, but have to fix this difference in nodes
 N = len(positions)
-T = 60 #Simulation time
-dt = T/N #Step size
+T = 20 # Simulation time
+dt = T/N # Step size, want around 0.1s
 
 # Symbolic optimization variables
 x = ca.SX.sym('x')
@@ -66,14 +79,17 @@ psi = ca.SX.sym('psi')
 phi = ca.SX.sym('phi')
 states = ca.vertcat(x, y, theta, psi, phi)
 
-u1 = ca.SX.sym('u1')
-u2 = ca.SX.sym('u2')
+u1 = ca.SX.sym('u1') # velocity
+u2 = ca.SX.sym('u2') # steering speed (rad/s)
 controls = ca.vertcat(u1, u2)
 
 # Constants
 M = 0.1
 L1 = 5
 L2 = 12
+W2 = 2.5
+Lwheel = 1
+Wwheel = 0.4
 
 # Dynamics
 rhs = ca.vertcat(u1 * ca.cos(theta), u1 * ca.sin(theta), (u1 * ca.tan(phi)) / L1, -((u1 * ca.sin(psi)) / L2) - ((((M * ca.cos(psi)) / L2) + 1) * (u1 * ca.tan(phi))) / L1, u2)
@@ -124,7 +140,7 @@ penalty = 1e7
 for k in range(N-1):  # Loop till N-1 because we are now taking k+1 for the direction change cost
     J += ca.mtimes([U[:, k].T, R, U[:, k]])  # Control cost
     J += ca.mtimes([(X[:, k] - xf).T, Q, (X[:, k] - xf)])  # State cost
-    x_next = X[:, k] + dt*f(X[:, k], U[:, k])  # Euler estimate for next step
+    x_next = X[:, k] + dt*f(X[:, k], U[:, k])  # Euler estimate for next step / RK4
 
     # Add cost for change in direction of movement 
     # (weet niet hoe ik dit goed kan doen voor nu is het gewoon cost op hoge verandering in snelheid)
@@ -250,7 +266,7 @@ U_sol = solution[states.shape[0]*(N+1):].reshape((N, 2)).T
 
 
 # NEW: Make a list of TrajectoryPoints named 'trajectory' that contains all the steps in the path
-trajectory = [TrajectoryPoint(X_sol[0, i], X_sol[1, i], X_sol[2, i], X_sol[3, i], X_sol[4, i]) for i in range(N+1)]
+trajectory = [TrajectoryPoint(X_sol[0, i], X_sol[1, i], X_sol[2, i]-np.pi/2, X_sol[3, i], X_sol[4, i]) for i in range(N+1)]
 
 # Extract optimized path
 X_opt = X_sol[0,:]
@@ -284,13 +300,13 @@ ax.plot(xf[0], xf[1], 'ro', label='Goal')
 # Loop over the obstacles
 for obstacle in data1:
     # Extract the coordinates for the corners of each rectangle
-    FLo = [obstacle['FL']['X'], obstacle['FL']['Y']]
-    FRo = [obstacle['FR']['X'], obstacle['FR']['Y']]
-    BLo = [obstacle['BL']['X'], obstacle['BL']['Y']]
-    BRo = [obstacle['BR']['X'], obstacle['BR']['Y']]
+    FLo = np.array([obstacle['FL']['X'], obstacle['FL']['Y']])
+    FRo = np.array([obstacle['FR']['X'], obstacle['FR']['Y']])
+    BLo = np.array([obstacle['BL']['X'], obstacle['BL']['Y']])
+    BRo = np.array([obstacle['BR']['X'], obstacle['BR']['Y']])
 
     # Create a rectangle patch for the obstacle
-    rectangle = patches.Polygon([FLo, FRo, BRo, BLo], closed=True, fill=False, edgecolor='r')
+    rectangle = patches.Polygon([FLo, FRo, BRo, BLo], closed=True, fill=True, edgecolor='k')
 
     # Add the obstacle to the plot
     ax.add_patch(rectangle)
@@ -298,6 +314,14 @@ for obstacle in data1:
 # Equalize the axis scales
 ax.axis('equal')
 
-
+plt.legend()
 plt.grid()
 plt.show()
+
+
+# Write to JSON
+# First convert trajectory points to list of dictionaries 
+trajectory_dict = {"points": [point.to_dict() for point in trajectory]}
+
+with open("trajectory.json", "w") as outputfile:
+    json.dump(trajectory_dict, outputfile, indent = 4)
