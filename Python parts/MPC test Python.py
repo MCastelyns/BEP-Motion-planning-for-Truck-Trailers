@@ -26,9 +26,9 @@ u2 = ca.SX.sym('u2')
 controls = ca.vertcat(u1, u2)
 n_controls = controls.numel()
 
-M = 0.1
-L1 = 5
-L2 = 12
+M = 0.1 # l_h = 0.15
+L1 = 5 # l = 4.26  DIT ZIJN WAARDES ECHTE MODEL IN UNITY
+L2 = 12 # l_1 = 8.6
 d = 1
 
 rhs = ca.vertcat(u1 * ca.cos(theta), u1 * ca.sin(theta), (u1 * ca.tan(phi)) / L1, -((u1 * ca.sin(psi)) / L2) - ((((M * ca.cos(psi)) / L2) + 1) * (u1 * ca.tan(phi))) / L1, u2)
@@ -107,7 +107,7 @@ x0 = np.array([[60], [20], [np.pi / 4], [0], [0]])  # initial condition
 xx = np.zeros((5, int(sim_tim/T) + 1))
 xx[:, 0] = x0.flatten()
 
-u0 = np.zeros((N, 2))  # two control inputs for each robot
+u0 = np.zeros((N, 2))  
 X0 = np.tile(x0.T, (N + 1, 1))  # initialization of the states decision variables
 
 # Start MPC

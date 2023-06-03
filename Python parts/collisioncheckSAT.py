@@ -70,16 +70,16 @@ def plot_rectangles(rect1, rect2, collision):
 # ([[x,y],[x,y],[x,y],[x,y]],[[x,y],[x,y],[x,y],[x,y]], True/False) waarbij die x,y de hoekpunten van rectangle 1 en 2 zijn
 # in de volgorde: [rectangle1punt1, rectangle1punt2, rectangle1punt3, rectangle1punt4],[rectangle2punt1, rectangle2punt2, rectangle2punt3, rectangle2punt4]
 # en de volgorde is clockwise of counterclockwise. Kan volgensmij allebei
-test_cases = [
-    ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[-20, -20], [0, -20], [0, 0], [-20, 0]], True),
-    ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[-5, -5], [5, -5], [5, 5], [-5, 5]], True),
-    ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[10, 10], [20, 10], [20, 20], [10, 20]], True),
-    ([[0, 0], [0, 10], [10, 10], [10, 0]], [[0, 0], [10, 0], [10, -10], [0, -10]], True),
-    ([[0, 0], [10, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [0, 10]], [[10*np.cos(np.pi/4), -10*np.sin(np.pi/4)], [20*np.cos(np.pi/4), 0], [20*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)]], True),
-    ([[0, 0], [10, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [0, 10]], [[20, -20], [30, -20], [30, -10], [20, -10]], False),
-    ([[0, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/2), 10*np.sin(np.pi/2)], [0, 10]], [[10*np.cos(np.pi/4), -10*np.sin(np.pi/4)], [20*np.cos(np.pi/4), 0], [20*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)]], True),
-    ([[0, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/2), 10*np.sin(np.pi/2)], [0, 10]], [[20*np.cos(np.pi/3), -20*np.sin(np.pi/3)], [30*np.cos(np.pi/3), -10*np.sin(np.pi/3)], [30*np.cos(np.pi/3), 10*np.sin(np.pi/3)], [20*np.cos(np.pi/3), 20*np.sin(np.pi/3)]], False),
-]
+# test_cases = [
+#     ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[-20, -20], [0, -20], [0, 0], [-20, 0]], True),
+#     ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[-5, -5], [5, -5], [5, 5], [-5, 5]], True),
+#     ([[-10, -10], [10, -10], [10, 10], [-10, 10]], [[10, 10], [20, 10], [20, 20], [10, 20]], True),
+#     ([[0, 0], [0, 10], [10, 10], [10, 0]], [[0, 0], [10, 0], [10, -10], [0, -10]], True),
+#     ([[0, 0], [10, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [0, 10]], [[10*np.cos(np.pi/4), -10*np.sin(np.pi/4)], [20*np.cos(np.pi/4), 0], [20*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)]], True),
+#     ([[0, 0], [10, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [0, 10]], [[20, -20], [30, -20], [30, -10], [20, -10]], False),
+#     ([[0, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/2), 10*np.sin(np.pi/2)], [0, 10]], [[10*np.cos(np.pi/4), -10*np.sin(np.pi/4)], [20*np.cos(np.pi/4), 0], [20*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)]], True),
+#     ([[0, 0], [10*np.cos(np.pi/4), 10*np.sin(np.pi/4)], [10*np.cos(np.pi/2), 10*np.sin(np.pi/2)], [0, 10]], [[20*np.cos(np.pi/3), -20*np.sin(np.pi/3)], [30*np.cos(np.pi/3), -10*np.sin(np.pi/3)], [30*np.cos(np.pi/3), 10*np.sin(np.pi/3)], [20*np.cos(np.pi/3), 20*np.sin(np.pi/3)]], False),
+# ]
 
 # for rect1, rect2, expected in test_cases:
 #     collision = is_collision(rect1, rect2)

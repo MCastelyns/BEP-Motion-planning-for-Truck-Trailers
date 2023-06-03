@@ -10,7 +10,11 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import json
 
-import collisioncheckSAT as cc
+from collisioncheckSAT import is_collision 
+from CollisionRectangles import Rectangle
+from CollisionRectangles import rectangle_to_points
+from CollisionRectangles import get_rectangles
+from CollisionRectangles import plot_rectangles
 
 # Make new class to store the variables. We can easily send all this data later to a JSON
 class TrajectoryPoint:
@@ -34,22 +38,17 @@ class TrajectoryPoint:
 # Import Data from JSON's
 # Import Obstacles
 with open('obstacles.json', 'r') as f:
-    data1 = json.load(f)
-x_obstacles = []
-y_obstacles = []
-for i, obstacle in enumerate(data1):
-    # Retrieve corner coordinates (this has values still under keys 'X' and 'Y', so can't directly use this have to extract the raw values first)
-    FL = obstacle['FL']
-    FR = obstacle['FR']
-    BL = obstacle['BL']
-    BR = obstacle['BR']
+    data = json.load(f)
     
-    # Get the raw coordinate values in a list for plotting
-    x_obstacles.append([FL['X'], FR['X'], BR['X'], BL['X']])
-    y_obstacles.append([FL['Y'], FR['Y'], BR['Y'], BL['Y']])
-    # Convert them to np arrays for better handling
-    x_obstacles_np = np.array(x_obstacles) # First row is x coordinates of FL1,FR1,BR1,BL1 second row FL2,FR2,BR2,BL2 etc 
-    y_obstacles_np = np.array(y_obstacles) # First row is y coordinates of FL1,FR1,BR1,BL1 second row FL2,FR2,BR2,BL2 etc 
+# create empty list for rectangles
+rectangles = []
+
+# Iterate over the data and create Rectangle objects
+for item in data:
+    corners = [[item['FL']['X'], item['FL']['Y']],[item['FR']['X'], item['FR']['Y']],[item['BL']['X'], item['BL']['Y']],[item['BR']['X'], item['BR']['Y']]]
+    rectangle = Rectangle(corners)
+    rectangles.append(rectangle)
+    #print(rectangle_to_points(rectangle))
 
 # Import Hybrid A* path (used as initial guess for warmstarting the solver)
 with open('initialize.json', 'r') as f:
@@ -95,9 +94,6 @@ Wwheel = 0.4
 rhs = ca.vertcat(u1 * ca.cos(theta), u1 * ca.sin(theta), (u1 * ca.tan(phi)) / L1, -((u1 * ca.sin(psi)) / L2) - ((((M * ca.cos(psi)) / L2) + 1) * (u1 * ca.tan(phi))) / L1, u2)
 f = ca.Function('f', [states, controls], [rhs])
 
-# Obstacles HAVE TO REPLACE WITH PROPER OBSTACLES CONSTRUCTED FROM THE CORNERPOINTS STORED IN x_obstacles_np and y_obstacles_np
-obstacles = []
-
 # Variables for full trajectory (states+controls and a OPT_variables variable to use in the solver)
 X = ca.MX.sym('X', states.shape[0], N+1)
 U = ca.MX.sym('U', controls.shape[0], N)
@@ -128,13 +124,27 @@ J = 0
 # Path constraints
 g = []
 
-# Shitty collision detection function, have to rewrite to use geometrics of truck and trailer
-def check_collision(pos, obstacle):
-    dist_to_obstacle = pos - obstacle
-    return ca.mtimes([dist_to_obstacle.T, dist_to_obstacle])  # Return the square of the distance to the obstacle
-
 # Large penalty for collisions
 penalty = 1e7
+
+# Obstacle cost seperately as this will need to loop to N instead of N-1
+for k in range(N):
+    xl = X[0, k]
+    yl = X[1, k]
+    thetal = X[2, k]
+    psil = X[3, k]
+    phil = X[4, k]
+
+    
+    # Use our get_rectangles() function to find the rectangles at this time step
+    truck_rect, trailer_rect, hitch_point = get_rectangles(xl, yl, thetal, psil)
+    # plot_rectangles(truck_rect, trailer_rect, hitch_point). HAVE TO FIX, Plotting not working currently
+    
+    # Loop over the 'rectangles' ; our obstacles
+    for obstacle in rectangles:
+        if is_collision(rectangle_to_points(truck_rect), rectangle_to_points(obstacle)) or is_collision(rectangle_to_points(trailer_rect), rectangle_to_points(obstacle)):
+            J += penalty
+    
 
 # Cost and constraints over full trajectory
 for k in range(N-1):  # Loop till N-1 because we are now taking k+1 for the direction change cost
@@ -151,9 +161,8 @@ for k in range(N-1):  # Loop till N-1 because we are now taking k+1 for the dire
     #print(ca.fmax(-U[0, k], 0))
 
     # Obstacle collision
-    for obstacle in obstacles:
-        obstacle_distance = check_collision(X[:2, k+1], obstacle)
-        J += penalty * ca.fmax(1 - obstacle_distance, 0)  # Only add penalty if within a radius of 1 from the center of the obstacle
+    for obstacle in rectangles:
+        test = 1 #to do: add penalty for collisions
 
     # Add path constraint
     g += [X[:, k+1] - x_next]
@@ -230,8 +239,7 @@ opts ={'ipopt.print_level': 0, 'print_time': 1, 'ipopt.acceptable_obj_change_tol
 # Create solver
 solver = ca.nlpsol('solver', 'ipopt', nlp, opts)
 
-# Path from Hybrid A* goes here
-# Test pad met onnodige 'waypoints/nodes', om te kijken of hij deze eruit kan halen (Lastigere test)
+# Path from Hybrid A* 
 x_path = positions[:,0]
 x_path = np.append(x_path, x_path[-1])
 
@@ -298,15 +306,10 @@ ax.plot(x0[0], x0[1], 'mo', label='Start')
 ax.plot(xf[0], xf[1], 'ro', label='Goal')
 
 # Loop over the obstacles
-for obstacle in data1:
-    # Extract the coordinates for the corners of each rectangle
-    FLo = np.array([obstacle['FL']['X'], obstacle['FL']['Y']])
-    FRo = np.array([obstacle['FR']['X'], obstacle['FR']['Y']])
-    BLo = np.array([obstacle['BL']['X'], obstacle['BL']['Y']])
-    BRo = np.array([obstacle['BR']['X'], obstacle['BR']['Y']])
-
+for obstacle in rectangles:
     # Create a rectangle patch for the obstacle
-    rectangle = patches.Polygon([FLo, FRo, BRo, BLo], closed=True, fill=True, edgecolor='k')
+    cornerarray = np.array([rectangle_to_points(obstacle)][0])
+    rectangle = patches.Polygon(cornerarray, closed=True, fill=True, edgecolor='k')
 
     # Add the obstacle to the plot
     ax.add_patch(rectangle)
@@ -320,8 +323,9 @@ plt.show()
 
 
 # Write to JSON
-# First convert trajectory points to list of dictionaries 
-trajectory_dict = {"points": [point.to_dict() for point in trajectory]}
+# First convert trajectory points to list of dictionaries
+trajectory_dict = [point.to_dict() for point in trajectory]
 
-with open("trajectory.json", "w") as outputfile:
-    json.dump(trajectory_dict, outputfile, indent = 4)
+# Indent is for floating point precision, default = 6. We have to decide how many decimals we want
+with open('trajectory.json', 'w') as f:
+    json.dump(trajectory_dict, f, indent=15)

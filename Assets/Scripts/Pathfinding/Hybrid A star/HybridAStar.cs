@@ -39,13 +39,14 @@ namespace PathfindingForVehicles
         //Used in the loop to easier include reversing
         private static float[] driveDistances = new float[] { driveDistance, -driveDistance};
         //The steering angles we are going to test
-        private static float maxAngle = 40f;
+        private static float maxAngle = 30f;
         // Calculate the angle spacing
-        private static float[] steeringAngles = new float[] { -maxAngle * Mathf.Deg2Rad, -maxAngle * Mathf.Deg2Rad/2, 0f, 
-            maxAngle * Mathf.Deg2Rad/2, maxAngle * Mathf.Deg2Rad };
+        private static int steeringAnglesAmount= 7;
+        //private static float[] steeringAngles = new float[] { -maxAngle * Mathf.Deg2Rad, 0f, maxAngle * Mathf.Deg2Rad };
+        private static float[] steeringAngles = generateSteeringAngles(maxAngle, steeringAnglesAmount);
         //The car will never reach the exact goal position, this is how accurate we want to be
         private const float posAccuracy = 1f;
-        private const float headingAccuracy = 10f;
+        private const float headingAccuracy = 15f;
         //The heading resolution (Junior had 5) [degrees]
         private const float headingResolution = 5f;
         private const float headingResolutionTrailer = 5f;
@@ -58,9 +59,25 @@ namespace PathfindingForVehicles
         private static int timer_ReedsSheppHeuristics;
         private static int timer_TrailerCollision;
         //At what distance to should we start expanding Reeds-Shepp nodes
-        private static float maxReedsSheppDist = 0f; // was 15f
-        //Oldsteeringangle needed for costs of steering change
-        public static float oldSteeringAngle = 0f;
+        private static float maxReedsSheppDist = 0f;
+
+        //
+        // Generate equally spaced steering angles to explore during child finding
+        //
+        public static float[] generateSteeringAngles(float maxAngle, int numberOfAngles)
+        {
+            float[] angles = new float[numberOfAngles];
+            maxAngle *= Mathf.Deg2Rad;
+            float angleStep = (2 * maxAngle) / (numberOfAngles - 1);
+
+            for (int i = 0; i < numberOfAngles; i++)
+            {
+                angles[i] = (-maxAngle + (i * angleStep));
+                Debug.Log(angles[i]);
+            }
+            
+            return angles;
+        }
 
 
         //
@@ -155,7 +172,7 @@ namespace PathfindingForVehicles
 
             while (!found && !resign)
             {
-                if (iterations > 40000) // was 40000
+                if (iterations > 80000) // was 400000
                 {
                     Debug.Log("Stuck in infinite loop");
 
@@ -656,7 +673,7 @@ namespace PathfindingForVehicles
 
             float probability = UnityEngine.Random.Range(0f, 1f);
 
-            if ((distanceToEnd < maxReedsSheppDist && probability < testProbability) || (distanceToEnd < 40f && probability < 0.005f))
+            if (distanceToEnd < maxReedsSheppDist && (probability < testProbability || probability < 0.005f))
             {
                 List<RSCar> shortestPath = ReedsShepp.GetShortestPath(
                     currentNode.rearWheelPos, 
@@ -722,7 +739,7 @@ namespace PathfindingForVehicles
 
             //But if we are close we might want to use the Reeds-Shepp distance as heuristics
             //This distance can be pre-calculated
-            if (cellData[cellPos.x, cellPos.z].distanceToTarget < 20f) // was 20f, but with trailer RS isn't an accurate heuristic
+            if (cellData[cellPos.x, cellPos.z].distanceToTarget < 0f) // was 20f, but with trailer RS isn't an accurate heuristic
             {
                 int timeBefore = Environment.TickCount;
 
