@@ -140,10 +140,7 @@ for k in range(N):
     truck_rect, trailer_rect, hitch_point = get_rectangles(xl, yl, thetal, psil)
     # plot_rectangles(truck_rect, trailer_rect, hitch_point). HAVE TO FIX, Plotting not working currently
     
-    # Loop over the 'rectangles' ; our obstacles
-    for obstacle in rectangles:
-        if is_collision(rectangle_to_points(truck_rect), rectangle_to_points(obstacle)) or is_collision(rectangle_to_points(trailer_rect), rectangle_to_points(obstacle)):
-            J += penalty
+
     
 
 # Cost and constraints over full trajectory
@@ -230,7 +227,7 @@ lbg = np.append(lbg, [-0.5, -0.5, -0.2, -0.2, -0.2])
 ubg = np.append(ubg, [0.5, 0.5, 0.2, 0.2, 0.2])
 
 
-# NLP problem
+# NLP problem add initial and final states under 'p' = ca.vertcat(initial state,final state)
 nlp = {'x': OPT_variables, 'f': J, 'g': g}
 
 # Solver options
@@ -325,6 +322,7 @@ plt.show()
 # Write to JSON
 # First convert trajectory points to list of dictionaries
 trajectory_dict = [point.to_dict() for point in trajectory]
+trajectorymatlab = [point for point in trajectory]
 
 # Indent is for floating point precision, default = 6. We have to decide how many decimals we want
 with open('trajectory.json', 'w') as f:
