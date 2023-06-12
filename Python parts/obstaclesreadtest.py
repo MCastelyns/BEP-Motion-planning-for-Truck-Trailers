@@ -37,7 +37,7 @@ for i, obstacle in enumerate(data):
 
 # DEBUGGING/TESTING, REMOVE WHEN WE ARE SURE IT'S WORKING AS INTENDED
 #####################################################################
-
+""" 
     print(f'Obstacle {i+1}:')
     print(f'Center: ({center_x}, {center_y})')
     print(f'Width: {width}')
@@ -60,4 +60,4 @@ for obstacle in obstacle_list:
 
 plt.xlim([-1, 120])
 plt.ylim([-1, 120])
-plt.show()
+plt.show() """
