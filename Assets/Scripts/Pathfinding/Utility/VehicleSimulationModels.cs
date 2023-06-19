@@ -72,6 +72,10 @@ namespace PathfindingForVehicles
             //}
 
             //Debug.Log(theta + " " + theta2);
+            if(theta < 0)
+            {
+                Debug.Log("Theta < 0!");
+            }
 
             return theta;
         }
@@ -85,15 +89,20 @@ namespace PathfindingForVehicles
         /// <param name="thetaOldDragVehicle">The drag vehicles old heading [rad]</param>
         /// <param name="D">Drive distance [m]. Should be negative if we reverse</param>
         /// <param name="d">Distance between trailer attachment point and trailer rear axle [m]</param>
+        /// <param name="beta">Turning Angle of the truck [rad]</param>
         /// <returns>The trailer's new heading [rad]</returns>
-        public static float CalculateNewTrailerHeading(float thetaOld, float thetaOldDragVehicle, float D, float d)
+        public static float CalculateNewTrailerHeading(float thetaOld, float thetaOldDragVehicle, float D, float d, float beta)
         {
             //According to some D is velocity of the drag vehicle but is not really working
             //From "Planning algorithms" which is different from http://planning.cs.uiuc.edu/node661.html#77556
             //where (thetaOldDragVehicle - thetaOld) is the opposite which gives a mirrored result
             //float theta = thetaOld + (D / d) * Mathf.Sin(thetaOldDragVehicle - thetaOld);
+            //According to https://www.diva-portal.org/smash/get/diva2:1428219/FULLTEXT01.pdf
+            // We should also add D/wheelbaseTruck * tan(steeringAngle = beta to the change of the trailer angle
+            // Not in this scenario since we use absolute angles.
 
-            float theta = thetaOld + ((D / d) * Mathf.Sin(thetaOldDragVehicle - thetaOld));
+            float theta = thetaOld +
+                (D/d) * Mathf.Sin(Mathf.DeltaAngle(thetaOld * Mathf.Rad2Deg, thetaOldDragVehicle * Mathf.Rad2Deg) * Mathf.Deg2Rad);
 
             //Clamp heading - is sometimes causing infinite loop so dont use?
             theta = HelpStuff.WrapAngleInRadians(theta);

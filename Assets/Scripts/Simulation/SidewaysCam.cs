@@ -11,11 +11,11 @@ public class SidewaysCam : MonoBehaviour
     public bool canMoveCamera;
 
     //How fast the camera is moving
-    private float camMoveSpeed = 30f;
+    private float camMoveSpeed = 50f;
 
     //Zoom
     private float currentZoom;
-    private float zoomSpeed = 50f;
+    private float zoomSpeed = 80f;
     private float minZoomDistance = 5f;
     private float maxZoomDistance = 100f;
 
@@ -23,14 +23,14 @@ public class SidewaysCam : MonoBehaviour
     private Vector3 lookAtThisPos;
 
     //What's the camera's angle
-    private float xAngle = 45f;
+    private float xAngle = 70f;
 
 
 
     void Start()
     {
         //Init the zoom
-        currentZoom = 20f;
+        currentZoom = 75f;
 
         //This is the position we want to look at when the simulation starts
         if (toFollowCar != null)

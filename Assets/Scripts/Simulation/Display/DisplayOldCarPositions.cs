@@ -18,7 +18,7 @@ public class DisplayOldCarPositions : MonoBehaviour
     private List<Rectangle> oldCarPositions = new List<Rectangle>();
 
     //Should we display the lines?
-    private bool shouldDisplayLines = true;
+    private bool shouldDisplayLines = false;
 
 
 

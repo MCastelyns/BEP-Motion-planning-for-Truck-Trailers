@@ -54,7 +54,7 @@ namespace PathfindingForVehicles
 
             while (totalChangeSqr >= tolerance * tolerance)
             {
-                if (iterations > 1000) //was 1000, sort of a way to get rid of path smoothening for now without breaking entire code
+                if (iterations > 1000)
                 {
                     break;
                 }
@@ -134,7 +134,7 @@ namespace PathfindingForVehicles
                             Vector3 dirToObstacle = closestObstaclePos - nodePos;
 
                             //Ignore obstacles far away
-                            float maxDist = 2f; //was 10f, might want to disable this if we want to park in tight spaces
+                            float maxDist = 10f;
 
                             if (dirToObstacle.sqrMagnitude < maxDist * maxDist)
                             {
@@ -321,7 +321,7 @@ namespace PathfindingForVehicles
 
             while (totalChangeSqr >= tolerance * tolerance)
             {
-                if (iterations > 1000) // was 1000, sort of disabling for now
+                if (iterations > 1000)
                 {
                     break;
                 }

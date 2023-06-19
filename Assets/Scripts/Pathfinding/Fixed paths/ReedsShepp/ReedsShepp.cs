@@ -249,6 +249,7 @@ namespace PathfindingForVehicles.ReedsSheppPaths
                     if (segmentSettings.steering != RSCar.Steering.Straight)
                     {
                         heading = heading + (stepLength / turningRadius) * steeringWheelPos;
+                        heading = HelpStuff.WrapAngleInRadians(heading);
                     }          
 
 

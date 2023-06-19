@@ -70,8 +70,3 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-
-
-# Temporary generated JSON files for communication between Python and C#. This would clutter github fast because we are generating new ones every time
-initialize.json
-obstacles.json

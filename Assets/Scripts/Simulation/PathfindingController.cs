@@ -40,7 +40,7 @@ public class PathfindingController : MonoBehaviour
 
         int startTime = Environment.TickCount;
             
-        this.GetComponent<ObstaclesGenerator>().InitObstacles(map);
+        this.GetComponent<ObstaclesGenerator>().InitObstacles(map, startPos);
             
         string timeText = DisplayController.GetDisplayTimeText(startTime, Environment.TickCount, "Generate obstacles and Voronoi diagram");
 
@@ -243,6 +243,52 @@ public class PathfindingController : MonoBehaviour
 
         timeText += DisplayController.GetDisplayTimeText(startTime, Environment.TickCount, "Hybrid A Star");
 
+        //Generate initial guess for the speed at all the points
+        //Calculate the speed the car should have to reach each waypoint
+
+        //Init them to the wanted speed we have specified
+        for (int i = 0; i < finalPath.Count; i++)
+        {
+            float maxSpeed = Parameters.maxPathFollowSpeed;
+
+            float wantedSpeed = maxSpeed;
+
+            //Slower if reversing
+            bool isReversing = finalPath[i].isReversing;
+            if (isReversing)
+            {
+                wantedSpeed *= 0.5f;
+            }
+
+            //Slow down if we are close to a turning point (reverse-forward or end point)
+            float distanceToTurningPoint = 0f;
+
+            for (int j = i + 1; j < finalPath.Count; j++)
+            {
+                distanceToTurningPoint += (finalPath[j - 1].frontWheelPos - finalPath[j].frontWheelPos).magnitude;
+
+                //Stop looping if this is a truning point
+                if (j == finalPath.Count - 1 || isReversing != finalPath[j].isReversing)
+                {
+                    break;
+                }
+            }
+
+
+            float minDistance = 10f;
+
+            if (distanceToTurningPoint < minDistance)
+            {
+                //Slow down the closer we are
+                wantedSpeed = (distanceToTurningPoint / minDistance) * maxSpeed;
+
+                //But dont slow dont too much
+                wantedSpeed = Mathf.Clamp(wantedSpeed, maxSpeed * 0.1f, maxSpeed);
+            }
+
+            finalPath[i].speed = wantedSpeed;
+        }
+
         if (finalPath == null || finalPath.Count == 0)
         {
             UIController.current.SetFoundPathText("Failed to find a path!");
@@ -261,27 +307,12 @@ public class PathfindingController : MonoBehaviour
 
         if (finalPath != null && finalPath.Count > 0)
         {
-            //Modify the path to make it easier for the vehicle to follow it
-            //Step 1. Hybrid A* is using the rear wheel axle to generate the path, but it's easier for the car to follow it
-            //if we also know where the path should have been if we had used the front axle
-            Vector3 vehicleStartDir = SimController.current.GetSelfDrivingCarTrans().forward;
-            
-            Vector3 vehicleEndDir = SimController.current.GetCarShowingEndPosTrans().forward;
-
-            ModifyPath.CalculateFrontAxlePositions(finalPath, startCar.carData, vehicleStartDir, vehicleEndDir, isMirrored: false);
-
-            //When reversing we should track a path which is a path that goes along the front axle
-            //but the front axle is mirrored along the rear axle
-            ModifyPath.CalculateFrontAxlePositions(finalPath, startCar.carData, vehicleStartDir, vehicleEndDir, isMirrored: true);
-
-
-            //Smooth the path by making it smoother and adding waypoints to make it easier for the car to follow the path 
+            //Apply trajectory optimization to make the path better and easier to follow for the MPC
             startTime = Environment.TickCount;
 
-            // smoothPath = ModifyPath.SmoothPath(finalPath, map, isCircular: false, isDebugOn: true);
             smoothPath = finalPath;
 
-            timeText += DisplayController.GetDisplayTimeText(startTime, Environment.TickCount, "Smooth path");
+            timeText += DisplayController.GetDisplayTimeText(startTime, Environment.TickCount, "Trajectory Optimization");
 
 
             //The car will immediatelly start following the path

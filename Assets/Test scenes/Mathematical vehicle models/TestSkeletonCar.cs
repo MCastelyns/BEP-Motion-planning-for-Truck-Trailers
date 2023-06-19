@@ -128,7 +128,7 @@ public class TestSkeletonCar : MonoBehaviour
         {
             float thetaOld = trailerObj.transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
-            UpdateTrailer(theta, d, transform, trailerObj, trailerAttachmentZOffset, alpha , newTheta);
+            UpdateTrailer(theta, d, transform, trailerObj, trailerAttachmentZOffset, beta);
 
             if (trailerObj2 != null)
             {
@@ -136,7 +136,7 @@ public class TestSkeletonCar : MonoBehaviour
 
                 float thetaOld2 = trailerObj2.transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
-                UpdateTrailer(thetaOld, d, trailerObj.transform, trailerObj2, trailerData2.trailerAttachmentZOffset, alpha , newTheta);
+                UpdateTrailer(thetaOld, d, trailerObj.transform, trailerObj2, trailerData2.trailerAttachmentZOffset, beta);
 
                 if (trailerObj3 != null)
                 {
@@ -144,7 +144,7 @@ public class TestSkeletonCar : MonoBehaviour
 
                     //float thetaOld3 = trailerObj3.transform.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
-                    UpdateTrailer(thetaOld2, d, trailerObj2.transform, trailerObj3, trailerData3.trailerAttachmentZOffset, alpha , newTheta);
+                    UpdateTrailer(thetaOld2, d, trailerObj2.transform, trailerObj3, trailerData3.trailerAttachmentZOffset, beta);
                 }
             }
         }
@@ -156,7 +156,7 @@ public class TestSkeletonCar : MonoBehaviour
 
 
 
-    private void UpdateTrailer(float thetaOldCar, float D, Transform dragVehicle, GameObject trailer, float trailerAttachmentZOffset, float alpha, float newTheta)
+    private void UpdateTrailer(float thetaOldCar, float D, Transform dragVehicle, GameObject trailer, float trailerAttachmentZOffset, float beta)
     {
         TrailerTest trailerData = trailer.transform.GetComponent<TrailerTest>();
         
@@ -177,7 +177,7 @@ public class TestSkeletonCar : MonoBehaviour
         //Distance to rear axle from connection point
         float d = Mathf.Abs(trailerData.rearWheelZOffset);
 
-        float thetaNew = VehicleSimulationModels.CalculateNewTrailerHeading(theta, thetaOldCar, D, d);
+        float thetaNew = VehicleSimulationModels.CalculateNewTrailerHeading(theta, thetaOldCar, D, d, beta);
 
 
         //Update the new values

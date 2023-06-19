@@ -61,7 +61,7 @@ public class TestFollowPathController : MonoBehaviour
 
         foreach (Vector3 pos in waypointsList)
         {
-            path.Add(new Node(null, pos, 0f, 0f, false));
+            path.Add(new Node(null, pos, 0f, false));
 
             //Set the front wheel pos to the same for simplification
             path[^1].frontWheelPos = pos;

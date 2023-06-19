@@ -90,7 +90,7 @@ namespace PathfindingForVehicles
 
 
             //Smooth the path again
-            //The distance between waypoints is still roughly 1 m, which can lead to abrupt steering
+            //The distance between waypoints is still roughly 1 m, which can lead to aprupt steering
             //So we need to smooth it again by adding waypoints between the old waypoints by using non-parametric interpolation, 
             //and then smooth it (just the curvature not the distance to obstacle) while the original waypoints are fixed
             //The distance between these new waypoints should be 5-10 cm (according to the official Junior report)
@@ -108,8 +108,8 @@ namespace PathfindingForVehicles
                 coordinatesB.Add(smoothPath[i].reverseWheelPos);
             }
 
-            SmoothPathMethods.ConstrainedGradientDescent(coordinatesF, isNodeFixed, map, isCircular, 0.2f, isDebugOn); //0.2f
-            SmoothPathMethods.ConstrainedGradientDescent(coordinatesB, isNodeFixed, map, isCircular, 0.2f, isDebugOn); //0.2f
+            SmoothPathMethods.ConstrainedGradientDescent(coordinatesF, isNodeFixed, map, isCircular, 0.2f, isDebugOn);
+            SmoothPathMethods.ConstrainedGradientDescent(coordinatesB, isNodeFixed, map, isCircular, 0.2f, isDebugOn);
 
             //Add the new coordinates to the nodes
             for (int i = 0; i < coordinatesF.Count; i++)

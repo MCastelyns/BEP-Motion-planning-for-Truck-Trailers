@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028377, g: 0.22571409, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1975,71 +1975,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536892583}
   m_CullTransparentMesh: 1
---- !u!1001 &537445289
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 174764, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_Name
-      value: Obstacle
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -17.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 456136, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
 --- !u!4 &537642110 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4289209541217708, guid: 555488a77f81f394491d2b672915f41b,
@@ -2928,7 +2863,7 @@ Transform:
   - {fileID: 913492631}
   - {fileID: 1993525896}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &913492630
 GameObject:
@@ -3817,7 +3752,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4670314733349732, guid: c5ac05187969192449a3f31d0353b902, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4670314733349732, guid: c5ac05187969192449a3f31d0353b902, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3992,12 +3927,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1145411073}
   m_CullTransparentMesh: 1
---- !u!1 &1174287621 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 174764, guid: 4a1c78a739ebfd341be37c71ce42250e,
-    type: 3}
-  m_PrefabInstance: {fileID: 537445289}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1236830269
 GameObject:
   m_ObjectHideFlags: 0
@@ -4431,11 +4360,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4336473995567042, guid: a04ac79451ea00947a6941bf2cee8199, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4336473995567042, guid: a04ac79451ea00947a6941bf2cee8199, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 55.99
+      value: 49.75
       objectReference: {fileID: 0}
     - target: {fileID: 4336473995567042, guid: a04ac79451ea00947a6941bf2cee8199, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4443,7 +4372,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4336473995567042, guid: a04ac79451ea00947a6941bf2cee8199, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 53.56
+      value: 29.21
       objectReference: {fileID: 0}
     - target: {fileID: 4336473995567042, guid: a04ac79451ea00947a6941bf2cee8199, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5436,7 +5365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstaclesParent: {fileID: 913492631}
-  obstaclePrefabObj: {fileID: 1174287621}
+  obstaclePrefabObj: {fileID: 174764, guid: 4a1c78a739ebfd341be37c71ce42250e, type: 3}
 --- !u!4 &1565470617
 Transform:
   m_ObjectHideFlags: 0
@@ -5454,7 +5383,7 @@ Transform:
   - {fileID: 965807611}
   - {fileID: 71527551}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1565470619
 MonoBehaviour:
@@ -6376,7 +6305,7 @@ RectTransform:
   - {fileID: 2047326164}
   - {fileID: 498763062}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7114,7 +7043,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4707169377363182, guid: 92ef896797e4ad24ea2f5112ca77c400, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4707169377363182, guid: 92ef896797e4ad24ea2f5112ca77c400, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7668,7 +7597,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &2019363749
 GameObject:
   m_ObjectHideFlags: 0
@@ -8041,7 +7970,14 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: BEP Project "Anti-Jackknife controller for truck-trailer"
+  m_Text: '
+
+    By Erik Nordeus
+
+
+    www.habrador.com
+
+'
 --- !u!222 &2080211110
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -34,8 +34,8 @@ namespace PathfindingForVehicles
                 for (int z = 0; z < mapWidth; z++)
                 {
                     //Maximum of all heuristics
-                    //map.cellData[x, z].heuristics = Mathf.Max(flowFieldHeuristics[x, z], euclideanHeuristics[x, z]);
-                    map.cellData[x, z].heuristics = euclideanHeuristics[x, z];
+                    map.cellData[x, z].heuristics = Mathf.Max(flowFieldHeuristics[x, z], euclideanHeuristics[x, z]);
+                    //map.cellData[x, z].heuristics = euclideanHeuristics[x, z];
                     //Adding max value breaks the simulation??? Because when we calculate f cost 
                     //we add g + h, which becomes a negative value if h is float.MaxValue and thus a good heuristics
                     //If obstacle, we should give it a high heuristic

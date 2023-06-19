@@ -162,10 +162,10 @@ namespace PathfindingForVehicles
         //http://www.technologicalutopia.com/sourcecode/xnageometry/mathhelper.cs.htm
         public static float WrapAngleInRadians(float angle)
         {
-            float PI = Mathf.PI;
-            float TWO_PI = PI * 2f;
-        
-            angle = (float)System.Math.IEEERemainder((double)angle, (double)TWO_PI);
+            //float PI = Mathf.PI;
+            //float TWO_PI = PI * 2f;
+
+            //angle = (float)System.Math.IEEERemainder((double)angle, (double)TWO_PI);
 
             //if (angle <= -PI)
             //{
@@ -176,13 +176,15 @@ namespace PathfindingForVehicles
             //    angle -= TWO_PI;
             //}
 
-            if (angle > 2f * PI)
+            /*if (angle > 2f * PI)
             {
                 angle = angle - 2f * PI;
-            }
-            if (angle < 0f)
+            }*/
+
+            angle %= 2 * Mathf.PI;
+            while (angle < 0)
             {
-                angle = 2f * PI + angle;
+                angle += 2 * Mathf.PI;
             }
 
             return angle;

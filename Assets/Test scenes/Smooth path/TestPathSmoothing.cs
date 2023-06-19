@@ -19,7 +19,7 @@ public class TestPathSmoothing : MonoBehaviour
     {
         Map map = InitMap();
         
-        //SmoothThisPath(map);
+        SmoothThisPath(map);
     }
 
 
@@ -68,71 +68,71 @@ public class TestPathSmoothing : MonoBehaviour
 
 
 
-    // private void SmoothThisPath(Map map)
-    // {        
-    //     //Generate the Reeds-Shepp path with some turning radius
-    //     //Get the shortest path
-    //     Vector3 startPos = startTrans.position;
-    //     Vector3 endPos = endTrans.position;
+    private void SmoothThisPath(Map map)
+    {        
+        //Generate the Reeds-Shepp path with some turning radius
+        //Get the shortest path
+        Vector3 startPos = startTrans.position;
+        Vector3 endPos = endTrans.position;
 
-    //     float startRot = startTrans.rotation.eulerAngles.y * Mathf.Deg2Rad;
-    //     float endRot = endTrans.rotation.eulerAngles.y * Mathf.Deg2Rad;
-
-
-    //     //Make sure the start and end are within the map
-    //     if (!(map.IsPosWithinGrid(startPos) && map.IsPosWithinGrid(endPos)))
-    //     {
-    //         return;
-    //     }
+        float startRot = startTrans.rotation.eulerAngles.y * Mathf.Deg2Rad;
+        float endRot = endTrans.rotation.eulerAngles.y * Mathf.Deg2Rad;
 
 
-    //     //Get the shortest path
-    //     List<RSCar> shortestPath = ReedsShepp.GetShortestPath(startPos, startRot, endPos, endRot, 12f, 1f, generateOneWp: false);
+        //Make sure the start and end are within the map
+        if (!(map.IsPosWithinGrid(startPos) && map.IsPosWithinGrid(endPos)))
+        {
+            return;
+        }
 
 
-    //     //Make it unsmooth to easier see the difference
-    //     Random.InitState(0);
-
-    //     for (int i = 1; i < shortestPath.Count - 1; i++)
-    //     {
-    //         Vector3 p = shortestPath[i].pos;
-
-    //         float dist = 0.4f;
-
-    //         p.x += Random.Range(-dist, dist);
-    //         p.z += Random.Range(-dist, dist);
-
-    //         shortestPath[i].pos = p;
-    //     }
+        //Get the shortest path
+        List<RSCar> shortestPath = ReedsShepp.GetShortestPath(startPos, startRot, endPos, endRot, 12f, 1f, generateOneWp: false);
 
 
-    //     //To Node data formart
-    //     List<Node> nodes = new List<Node>();
+        //Make it unsmooth to easier see the difference
+        Random.InitState(0);
 
-    //     for (int i = 1; i < shortestPath.Count - 1; i++)
-    //     {
-    //         Node previousNode = null;
-    //         Vector3 pos = shortestPath[i].pos;
-    //         float heading = shortestPath[i].HeadingInRad;
-    //         bool isReversing = shortestPath[i].gear == RSCar.Gear.Back ? true : false;
+        for (int i = 1; i < shortestPath.Count - 1; i++)
+        {
+            Vector3 p = shortestPath[i].pos;
 
-    //         Node node = new Node(previousNode, pos, heading, isReversing);
+            float dist = 0.4f;
 
-    //         nodes.Add(node);
-    //     }
+            p.x += Random.Range(-dist, dist);
+            p.z += Random.Range(-dist, dist);
 
-
-    //     //Smooth the path and push it away from obstacles
-    //     List<Node> smoothPath = ModifyPath.SmoothPath(nodes, map, false, isDebugOn: true);
+            shortestPath[i].pos = p;
+        }
 
 
-    //     //Display
-    //     DisplayPath(nodes, Color.white);
-    //     DisplayPathNodes(nodes, Color.black);
+        //To Node data formart
+        List<Node> nodes = new List<Node>();
 
-    //     DisplayPath(smoothPath, Color.blue);
-    //     //DisplayPathNodes(smoothPath, Color.black);
-    // }
+        for (int i = 1; i < shortestPath.Count - 1; i++)
+        {
+            Node previousNode = null;
+            Vector3 pos = shortestPath[i].pos;
+            float heading = shortestPath[i].HeadingInRad;
+            bool isReversing = shortestPath[i].gear == RSCar.Gear.Back ? true : false;
+
+            Node node = new Node(previousNode, pos, heading, isReversing);
+
+            nodes.Add(node);
+        }
+
+
+        //Smooth the path and push it away from obstacles
+        List<Node> smoothPath = ModifyPath.SmoothPath(nodes, map, false, isDebugOn: true);
+
+
+        //Display
+        DisplayPath(nodes, Color.white);
+        DisplayPathNodes(nodes, Color.black);
+
+        DisplayPath(smoothPath, Color.blue);
+        //DisplayPathNodes(smoothPath, Color.black);
+    }
 
 
 

@@ -12,6 +12,8 @@ namespace PathfindingForVehicles
         //The estimated cost to the goal from this node = the heuristics
         //Needed so we can calculate the f cost easier
         public float hCost;
+        
+        public float speed;
 
         //The data we need for the car
         //The position the car's rear axle should have when following the path
@@ -24,12 +26,11 @@ namespace PathfindingForVehicles
         public float heading;
         //Is the car reversing when traveling to this node?
         public bool isReversing;
+        //Steering angle of the car
+        public float steeringAngle;
 
         //Trailer heading in radians
         private float trailerHeading;
-
-        //Steering angle used to reach node, need this for cost calculations
-        public float nodesteeringangle;
 
         //The node we took to get here so we can get the final path
         public Node previousNode;
@@ -44,12 +45,11 @@ namespace PathfindingForVehicles
         }
 
 
-        public Node(Node previousNode, Vector3 rearWheelPos, float heading, float nodesteeringangle, bool isReversing)
+        public Node(Node previousNode, Vector3 rearWheelPos, float heading, bool isReversing)
         {
             this.previousNode = previousNode;
             this.rearWheelPos = rearWheelPos;
             this.heading = heading;
-            this.nodesteeringangle = nodesteeringangle;
             this.isReversing = isReversing;
         }
 
@@ -91,6 +91,11 @@ namespace PathfindingForVehicles
         public float TrailerHeadingInDegrees
         {
             get { return this.trailerHeading * Mathf.Rad2Deg; }
+        }
+
+        public float SteeringAngleInDegrees
+        {
+            get { return this.steeringAngle * Mathf.Rad2Deg; }
         }
 
 
@@ -137,6 +142,13 @@ namespace PathfindingForVehicles
             }
 
             return -compare;
+        }
+
+        //Log debug info
+        public void PrintInfo()
+        {
+            string display = "To be implemented";
+            Debug.Log(display);
         }
     }
 }

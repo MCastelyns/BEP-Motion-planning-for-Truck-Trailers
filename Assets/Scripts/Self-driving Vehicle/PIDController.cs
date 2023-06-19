@@ -18,7 +18,7 @@ namespace SelfDrivingVehicle
         //Calculate the steer angle alpha by using a PDI controller
         public float GetNewValue(float error, PID_Parameters pid_parameters)
         {
-            //The value we want to change with the PID controller to minimize the error, such as the steering angle
+            //The value we want to change with the PID controller to minimize rhe error, such as the steering angle
             float alpha = 0f;
 
 

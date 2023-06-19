@@ -28,10 +28,10 @@ public class DisplayShortestPath : MonoBehaviour
     private List<Node> waypointNodes;
 
     //Should we display the search tree
-    private bool shouldDisplaySearchTree = false;
+    private bool shouldDisplaySearchTree = true;
 
     //Which search tree should we display?
-    private bool displayNodeExpansionOrder = false;
+    private bool displayNodeExpansionOrder = true;
 
 
 

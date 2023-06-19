@@ -39,7 +39,7 @@ public class SimController : MonoBehaviour
     {
         current = this;
 
-        //Create the other vehicles which we attach to the moise
+        //Create the other vehicles which we attach to the mouse
         GameObject deadCarMouseObj = Instantiate(car_marker.gameObject) as GameObject;
         GameObject deadSemiMouseObj = Instantiate(semi_marker.gameObject) as GameObject;
         GameObject deadSemiWithTrailerMouseObj = Instantiate(semiWithTrailer_marker.gameObject) as GameObject;
@@ -141,7 +141,7 @@ public class SimController : MonoBehaviour
 
         //Move it to the correct position behind the semi
         trailer_selfDriving.position = semi_selfDriving.position;
-        trailer_selfDriving.rotation = Quaternion.identity;
+        trailer_selfDriving.rotation = startRot;
 
         //Make the models visible
         trailer_selfDriving.gameObject.SetActive(true);

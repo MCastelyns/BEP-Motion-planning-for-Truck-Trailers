@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using PathfindingForVehicles;
-
+using Newtonsoft.Json;
+using System.IO;
 
 
 namespace SelfDrivingVehicle
@@ -25,13 +26,19 @@ namespace SelfDrivingVehicle
     {
         public List<AxleInfo> axleInfos;
 
-        //An animation curve that will determine the wheel angle as a function of speed
+        //An animation curve that will deterine the wheel angle as a function of speed
         public AnimationCurve wheelAngleCurve;
 
         //Speed calculations
         //Speed in km/h
         private float currentSpeed = 0f;
         private Vector3 lastPosition = Vector3.zero;
+        private Vector3 direction = Vector3.zero;
+        private float steeringAngle = 0f;
+
+        private float accelaration = 0f;
+        private float mass = 20000;
+        private float wheelRadius = 0.25f;
 
         //Reference to the PID controller
         private PIDController PIDScript;
@@ -46,7 +53,7 @@ namespace SelfDrivingVehicle
         private CarMode carMode = CarMode.Stop;
 
         //Average the steering angles to simulate the time it takes to turn the wheels
-        private float averageSteeringAngle = 0f;
+        // private float averageSteeringAngle = 0f;
         //The steering angle we should have to follow the path
         private float wantedSteeringAngle = 0f;
         //The speed we should have to follow the path
@@ -75,8 +82,42 @@ namespace SelfDrivingVehicle
         {
             AddMotorAndSteering();
             CalculateSpeed();
+
+            /*// Get the current states and save them to a json file
+            direction = transform.position - lastPosition;
+            float x = transform.position.x;
+            float z = transform.position.z;
+            float heading = transform.eulerAngles.y;
+            Transform trailer = SimController.current.TryGetTrailerTrans();
+            float trailerHeading = trailer.eulerAngles.y;
+            float hitchAngle = Mathf.DeltaAngle(heading, trailerHeading);
+            currentSpeed = (direction.magnitude / Time.deltaTime) * 3.6f;
+            lastPosition = transform.position;
+
+            var states = new { x = x, z = z, heading = heading, hitchAngle = hitchAngle, steeringAngle = steeringAngle };
+
+            //Save the position for the next update
+            File.WriteAllText("states.json", JsonConvert.SerializeObject(states, Formatting.Indented));
+
+            // Call the MPC function to calculate the new control inputs
+
+
+            // Retrieve new control inputs from json
+
+            float steeringChange = 0f;
+            accelaration = 0f;
+
+            // Apply controls
+            steeringAngle += steeringChange * Time.deltaTime; // not sure about deltaTime here*/
+
         }
 
+
+        void ApplyMotorAndSteering()
+        {
+            float torque = accelaration * mass * wheelRadius;
+
+        }
 
 
         void AddMotorAndSteering()
@@ -85,7 +126,6 @@ namespace SelfDrivingVehicle
             //float motorTorque = maxMotorTorque * Input.GetAxis("Vertical");
             //float steeringAngle = CalculateSteerAngle() * Input.GetAxis("Horizontal");
 
-            float steeringAngle = 0f;
             float motorTorque = 0f;
             float brakeTorque = 0f;
 
@@ -114,7 +154,6 @@ namespace SelfDrivingVehicle
             {
                 brakeTorque = carDataController.carData.maxBrakeTorque;
             }
-
 
 
             //Add everything to the wheels
